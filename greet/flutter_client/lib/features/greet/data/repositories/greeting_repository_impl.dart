@@ -19,4 +19,15 @@ class GreetingRepositoryImpl implements GreetingRepository {
       return Left(e.toString());
     }
   }
+
+  @override
+  Stream<Either<String, GreetingEntitiy>> streamGreetings(String name) async* {
+    try {
+      yield* remoteDatasource.streamGreetings(name).map((event) {
+        return Right(GreetingEntitiy(message: event.message));
+      });
+    } catch (e) {
+      yield Left(e.toString());
+    }
+  }
 }

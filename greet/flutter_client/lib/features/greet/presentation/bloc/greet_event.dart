@@ -15,3 +15,12 @@ class GetGreetingEvent extends GreetEvent {
   @override
   List<Object> get props => [name];
 }
+
+class StreamGreetingsEvent extends GreetEvent {
+  final String name;
+
+  const StreamGreetingsEvent({required this.name});
+
+  @override
+  List<Object> get props => [name];
+}

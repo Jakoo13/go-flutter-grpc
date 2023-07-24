@@ -27,3 +27,21 @@ class GreetError extends GreetState {
   @override
   List<Object> get props => [message];
 }
+
+class GreetStreamLoaded extends GreetState {
+  final String message;
+
+  const GreetStreamLoaded({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class GreetStreamError extends GreetState {
+  final String message;
+
+  const GreetStreamError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

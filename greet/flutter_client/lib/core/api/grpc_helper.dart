@@ -5,6 +5,7 @@ import '../../proto/greet.pbgrpc.dart';
 
 abstract class GrpcHelper {
   Future<GreetingModel> getGreeting(String name);
+  Stream<GreetingModel> streamGreetings(String name);
 }
 
 class GrpcHelperImpl implements GrpcHelper {
@@ -19,5 +20,14 @@ class GrpcHelperImpl implements GrpcHelper {
     greetRequest.firstName = name;
     GreetResponse response = await client.greet(greetRequest);
     return GreetingModel(message: response.result);
+  }
+
+  @override
+  Stream<GreetingModel> streamGreetings(String name) async* {
+    GreetRequest greetRequest = GreetRequest.create();
+    greetRequest.firstName = name;
+    yield* client.greetManyTimes(greetRequest).map((event) {
+      return GreetingModel(message: event.result);
+    });
   }
 }

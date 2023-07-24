@@ -19,10 +19,13 @@ import 'greet.pb.dart' as $0;
 
 export 'greet.pb.dart';
 
-// @$pb.GrpcServiceName('proto.GreetService')
 class GreetServiceClient extends $grpc.Client {
   static final _$greet = $grpc.ClientMethod<$0.GreetRequest, $0.GreetResponse>(
       '/proto.GreetService/Greet',
+      ($0.GreetRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.GreetResponse.fromBuffer(value));
+  static final _$greetManyTimes = $grpc.ClientMethod<$0.GreetRequest, $0.GreetResponse>(
+      '/proto.GreetService/GreetManyTimes',
       ($0.GreetRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.GreetResponse.fromBuffer(value));
 
@@ -35,9 +38,12 @@ class GreetServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.GreetResponse> greet($0.GreetRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$greet, request, options: options);
   }
+
+  $grpc.ResponseStream<$0.GreetResponse> greetManyTimes($0.GreetRequest request, {$grpc.CallOptions? options}) {
+    return $createStreamingCall(_$greetManyTimes, $async.Stream.fromIterable([request]), options: options);
+  }
 }
 
-// @$pb.GrpcServiceName('proto.GreetService')
 abstract class GreetServiceBase extends $grpc.Service {
   $core.String get $name => 'proto.GreetService';
 
@@ -49,11 +55,23 @@ abstract class GreetServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.GreetRequest.fromBuffer(value),
         ($0.GreetResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GreetRequest, $0.GreetResponse>(
+        'GreetManyTimes',
+        greetManyTimes_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) => $0.GreetRequest.fromBuffer(value),
+        ($0.GreetResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.GreetResponse> greet_Pre($grpc.ServiceCall call, $async.Future<$0.GreetRequest> request) async {
     return greet(call, await request);
   }
 
+  $async.Stream<$0.GreetResponse> greetManyTimes_Pre($grpc.ServiceCall call, $async.Future<$0.GreetRequest> request) async* {
+    yield* greetManyTimes(call, await request);
+  }
+
   $async.Future<$0.GreetResponse> greet($grpc.ServiceCall call, $0.GreetRequest request);
+  $async.Stream<$0.GreetResponse> greetManyTimes($grpc.ServiceCall call, $0.GreetRequest request);
 }

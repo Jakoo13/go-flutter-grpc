@@ -43,7 +43,7 @@ class _GetGreetingPageState extends State<GetGreetingPage> {
               ),
               Form(
                 key: _formKey,
-                child: _emailField(context),
+                child: _nameField(context),
               ),
               const SizedBox(
                 height: 40,
@@ -80,7 +80,7 @@ class _GetGreetingPageState extends State<GetGreetingPage> {
         ));
   }
 
-  Widget _emailField(context) {
+  Widget _nameField(context) {
     return Align(
       child: CustomTextField(
         controller: _nameController,

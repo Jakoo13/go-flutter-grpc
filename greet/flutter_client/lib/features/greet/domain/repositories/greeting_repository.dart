@@ -3,4 +3,5 @@ import 'package:flutter_client/features/greet/domain/entities/greeting_entity.da
 
 abstract class GreetingRepository {
   Future<Either<String, GreetingEntitiy>> getGreeting(String name);
+  Stream<Either<String, GreetingEntitiy>> streamGreetings(String name);
 }

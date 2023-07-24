@@ -4,6 +4,7 @@ import '../../../../core/data_helper.dart';
 
 abstract class GreetingRemoteDatasource {
   Future<GreetingModel> getGreeting(String name);
+  Stream<GreetingModel> streamGreetings(String name);
 }
 
 class GreetingRemoteDatasourceImpl implements GreetingRemoteDatasource {
@@ -16,5 +17,10 @@ class GreetingRemoteDatasourceImpl implements GreetingRemoteDatasource {
     GreetingModel greetingModel = GreetingModel(message: response.message);
 
     return greetingModel;
+  }
+
+  @override
+  Stream<GreetingModel> streamGreetings(String name) async* {
+    yield* _dataHelper.grpcHelper.streamGreetings(name);
   }
 }
