@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_client/features/greet/data/datasources/greeting_remote_datasource.dart';
 import 'package:flutter_client/features/shared/presentation/pages/home_page.dart';
 
+import 'features/calculator/data/datasources/calculator_remote_datasource.dart';
+import 'features/calculator/data/repositories/calculator_repository_impl.dart';
+import 'features/calculator/domain/usecases/add_numbers.dart';
+import 'features/calculator/presentation/bloc/calculator_bloc.dart';
 import 'features/greet/data/repositories/greeting_repository_impl.dart';
 import 'features/greet/domain/usecases/get_greeting.dart';
 import 'features/greet/domain/usecases/stream_greetings.dart';
@@ -30,6 +34,15 @@ class MyApp extends StatelessWidget {
             streamGreetings: StreamGreetings(
               repository: GreetingRepositoryImpl(
                 remoteDatasource: GreetingRemoteDatasourceImpl(),
+              ),
+            ),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => CalculatorBloc(
+            addNumbers: AddNumbers(
+              repository: CalculatorRepositoryImpl(
+                remoteDataSource: CalculatorRemoteDatasourceImpl(),
               ),
             ),
           ),
