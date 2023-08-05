@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net"
 
@@ -13,12 +14,19 @@ import (
 var collection *mongo.Collection
 var addr string = "0.0.0.0:50051"
 
+const uri = "mongodb://root:root@localhost:27017/"
+
 type Server struct {
 	proto.BlogServiceServer
 }
 
 func main() {
-	mongoClient, err := mongo.NewClient(options.Client().ApplyURI("mongodb:root:root@localhost:27017/"))
+	// Deprecated 
+	// mongoClient, err := mongo.NewClient(options.Client().ApplyURI("mongodb:root:root@localhost:27017/"))
+	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
+	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
+	// Create a new client and connect to the server
+	mongoClient, err := mongo.Connect(context.TODO(), opts)
 	if err != nil {
 		log.Fatalf("Failed to create mongo client: %v", err)
 	}

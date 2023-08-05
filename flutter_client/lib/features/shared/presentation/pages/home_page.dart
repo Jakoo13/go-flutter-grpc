@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_client/features/blog/presentation/pages/blog_screen.dart';
 import 'package:flutter_client/features/calculator/presentation/pages/calculator_screen.dart';
 
 import '../../../greet/presentation/pages/get_greeting_page.dart';
@@ -93,6 +94,34 @@ class HomePage extends StatelessWidget {
                 child: const Center(
                   child: Text(
                     "Calculator",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const BlogScreen(),
+                  ),
+                );
+              },
+              child: Container(
+                width: 200,
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.green,
+                ),
+                child: const Center(
+                  child: Text(
+                    "Blog",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
