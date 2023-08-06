@@ -11,20 +11,20 @@ class GreetingRepositoryImpl implements GreetingRepository {
   GreetingRepositoryImpl({required this.remoteDatasource});
 
   @override
-  Future<Either<String, GreetingEntitiy>> getGreeting(String name) async {
+  Future<Either<String, GreetingEntity>> getGreeting(String name) async {
     try {
       final GreetingModel greeting = await remoteDatasource.getGreeting(name);
-      return Right(GreetingEntitiy(message: greeting.message));
+      return Right(GreetingEntity(message: greeting.message));
     } catch (e) {
       return Left(e.toString());
     }
   }
 
   @override
-  Stream<Either<String, GreetingEntitiy>> streamGreetings(String name) async* {
+  Stream<Either<String, GreetingEntity>> streamGreetings(String name) async* {
     try {
       yield* remoteDatasource.streamGreetings(name).map((event) {
-        return Right(GreetingEntitiy(message: event.message));
+        return Right(GreetingEntity(message: event.message));
       });
     } catch (e) {
       yield Left(e.toString());

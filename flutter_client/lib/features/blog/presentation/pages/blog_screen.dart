@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_client/features/blog/presentation/pages/create_blog_screen.dart';
 
-import '../bloc/blog_bloc.dart';
+import '../bloc/blogs/blogs_bloc.dart';
 
 class BlogScreen extends StatefulWidget {
   const BlogScreen({super.key});
@@ -15,7 +15,7 @@ class _BlogScreenState extends State<BlogScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<BlogBloc>().add(GetBlogsEvent());
+    context.read<BlogsBloc>().add(GetBlogsStream());
   }
 
   @override
@@ -24,57 +24,40 @@ class _BlogScreenState extends State<BlogScreen> {
       appBar: AppBar(
         title: const Text('Blogs'),
       ),
-      body: BlocBuilder<BlogBloc, BlogState>(
+      body: BlocBuilder<BlogsBloc, BlogsState>(
         builder: (context, state) {
-          if (state is BlogLoading) {
+          print(state);
+          if (state is Adding) {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (state is BlogError) {
+          } else if (state is BlogsLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is BlogsError) {
             return Center(
               child: Text(state.message),
             );
-          } else if (state is GetBlogsSuccess) {
+          } else if (state is NewBlogsAdded) {
             return SizedBox(
               width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: state.blogs.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 25),
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey[300],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              state.blogs[index].title,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              state.blogs[index].content,
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: state.blogs.length,
+                      itemBuilder: (context, index) {
+                        final blog = state.blogs[index];
+                        return Card(
+                          child: ListTile(
+                            title: Text(blog.title),
+                            subtitle: Text(blog.content),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   SizedBox(
                     width: 250,
@@ -105,11 +88,40 @@ class _BlogScreenState extends State<BlogScreen> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    width: 250,
+                    child: InkWell(
+                      onTap: () {
+                        print(context
+                            .read<BlogsBloc>()
+                            .streamSubscription!
+                            .isPaused);
+                      },
+                      child: Container(
+                        height: 60,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.green,
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "stream paused?",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             );
           } else {
-            return const Text("Some Sort Of Error");
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
         },
       ),

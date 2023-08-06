@@ -10,7 +10,7 @@ class StreamGreetings
   StreamGreetings({required this.repository});
 
   @override
-  Stream<Either<String,GreetingEntitiy>> call(StreamGreetingsParams params) {
+  Stream<Either<String, GreetingEntity>> call(StreamGreetingsParams params) {
     return repository.streamGreetings(params.name);
   }
 }

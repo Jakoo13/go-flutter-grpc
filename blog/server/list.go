@@ -22,7 +22,7 @@ func (s *Server) ListBlogs(in *emptypb.Empty, stream proto.BlogService_ListBlogs
 			fmt.Sprintf("Internal error: %s", err),
 		)
 	}
-	defer cursor.Close(context.Background())
+	// defer cursor.Close(context.Background())
 
 	for cursor.Next(context.Background()) {
 		data := &BlogItem{}

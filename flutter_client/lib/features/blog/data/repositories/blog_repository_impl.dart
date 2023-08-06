@@ -4,7 +4,6 @@ import 'package:flutter_client/features/blog/domain/entities/blog_entity.dart';
 import '../../domain/repositories/blog_repository.dart';
 import '../../domain/usecases/create_blog.dart';
 import '../datasources/blog_remote_datasource.dart';
-import '../models/blog_model.dart';
 
 class BlogRepositoryImpl implements BlogRepository {
   final BlogRemoteDatasource remoteDataSource;
@@ -22,7 +21,7 @@ class BlogRepositoryImpl implements BlogRepository {
         params.content,
       );
       return Right(
-        result, 
+        result,
       );
     } catch (e) {
       return Left(e.toString());
@@ -30,15 +29,9 @@ class BlogRepositoryImpl implements BlogRepository {
   }
 
   @override
-  Future<Either<String, List<BlogEntity>>> getBlogs() async {
-    try {
-      List<BlogModel> result = await remoteDataSource.getBlogs();
-      result.map((blogModel) => blogModel.toEntity()).toList();
-      return Right(
-        result, 
-      );
-    } catch (e) {
-      return Left(e.toString());
-    }
+  Stream<BlogEntity> getBlogs() async* {
+    final response = remoteDataSource.getBlogs();
+
+    yield* response;
   }
 }

@@ -1,17 +1,18 @@
 part of 'greet_bloc.dart';
 
 abstract class GreetState extends Equatable {
-  const GreetState();  
+  const GreetState();
 
   @override
   List<Object> get props => [];
 }
+
 class GreetInitial extends GreetState {}
 
 class GreetLoading extends GreetState {}
 
 class GreetLoaded extends GreetState {
-  final GreetingEntitiy entity;
+  final GreetingEntity entity;
 
   const GreetLoaded({required this.entity});
 

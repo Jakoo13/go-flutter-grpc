@@ -34,14 +34,14 @@ class GreetBloc extends Bloc<GreetEvent, GreetState> {
     }
   }
 
-  List<GreetingEntitiy> greetings = [];
+  List<GreetingEntity> greetings = [];
   _onStreamGreetings(
       StreamGreetingsEvent event, Emitter<GreetState> emit) async {
     emit(GreetLoading());
     try {
       final response =
           streamGreetings.call(StreamGreetingsParams(name: event.name));
-      await for (final Either<String, GreetingEntitiy> greeting in response) {
+      await for (final Either<String, GreetingEntity> greeting in response) {
         greeting.fold(
           (l) {
             emit(
@@ -60,6 +60,4 @@ class GreetBloc extends Bloc<GreetEvent, GreetState> {
       emit(GreetStreamError(message: e.toString()));
     }
   }
-
-  
 }

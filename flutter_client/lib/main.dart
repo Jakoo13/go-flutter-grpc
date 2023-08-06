@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_client/features/blog/presentation/bloc/blog_bloc.dart';
+import 'package:flutter_client/features/blog/presentation/bloc/blogs/blogs_bloc.dart';
 import 'package:flutter_client/features/greet/data/datasources/greeting_remote_datasource.dart';
 import 'package:flutter_client/features/shared/presentation/pages/home_page.dart';
 
@@ -8,6 +8,7 @@ import 'features/blog/data/datasources/blog_remote_datasource.dart';
 import 'features/blog/data/repositories/blog_repository_impl.dart';
 import 'features/blog/domain/usecases/create_blog.dart';
 import 'features/blog/domain/usecases/get_blogs.dart';
+import 'features/blog/presentation/bloc/blog_item.dart/blog_item_bloc.dart';
 import 'features/calculator/data/datasources/calculator_remote_datasource.dart';
 import 'features/calculator/data/repositories/calculator_repository_impl.dart';
 import 'features/calculator/domain/usecases/add_numbers.dart';
@@ -53,13 +54,17 @@ class MyApp extends StatelessWidget {
           ),
         ),
         BlocProvider(
-          create: (context) => BlogBloc(
-            createBlog: CreateBlog(
+          create: (context) => BlogsBloc(
+            getBlogs: GetBlogs(
               repository: BlogRepositoryImpl(
                 remoteDataSource: BlogRemoteDatasourceImpl(),
               ),
             ),
-            getBlogs: GetBlogs(
+          ),
+        ),
+        BlocProvider(
+          create: (context) => BlogItemBloc(
+            createBlog: CreateBlog(
               repository: BlogRepositoryImpl(
                 remoteDataSource: BlogRemoteDatasourceImpl(),
               ),

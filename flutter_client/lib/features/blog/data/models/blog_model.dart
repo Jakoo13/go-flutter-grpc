@@ -14,4 +14,12 @@ class BlogModel extends BlogEntity {
       content: super.content,
     );
   }
+
+  factory BlogModel.fromMap(Map<String, dynamic> map) {
+    return BlogModel(
+      authorId: map['authorId'],
+      title: map['title'],
+      content: map['content'],
+    );
+  }
 }

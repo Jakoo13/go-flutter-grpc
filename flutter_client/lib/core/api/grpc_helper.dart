@@ -14,7 +14,7 @@ abstract class GrpcHelper {
   Stream<GreetingModel> streamGreetings(String name);
   Future<AnswerModel> addNumbers(int firstNumber, int secondNumber);
   Future<String> createBlog(String authorId, String title, String content);
-  Future<List<BlogModel>> getBlogs();
+  Stream<BlogModel> getBlogs();
 }
 
 class GrpcHelperImpl implements GrpcHelper {
@@ -67,15 +67,14 @@ class GrpcHelperImpl implements GrpcHelper {
   }
 
   @override
-  Future<List<BlogModel>> getBlogs() async {
-    List<BlogModel> blogs = [];
-    await for (var blog in blogClient.listBlogs(Empty.create())) {
-      blogs.add(BlogModel(
-        authorId: blog.authorId,
-        title: blog.title,
-        content: blog.content,
-      ));
-    }
-    return blogs;
+  Stream<BlogModel> getBlogs() async* {
+    var result = blogClient.listBlogs(Empty.create());
+    yield* result.map((event) {
+      return BlogModel(
+        authorId: event.authorId,
+        title: event.title,
+        content: event.content,
+      );
+    });
   }
 }

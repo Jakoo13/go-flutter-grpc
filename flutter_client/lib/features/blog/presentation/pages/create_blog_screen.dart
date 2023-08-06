@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_client/features/blog/presentation/bloc/blog_bloc.dart';
 
 import '../../../shared/presentation/widgets/custom_text_field.dart';
+import '../bloc/blog_item.dart/blog_item_bloc.dart';
 
 class CreateBlogScreen extends StatefulWidget {
   const CreateBlogScreen({super.key});
@@ -30,13 +30,13 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              BlocBuilder<BlogBloc, BlogState>(
+              BlocBuilder<BlogItemBloc, BlogItemState>(
                 builder: (context, state) {
-                  if (state is BlogLoading) {
+                  if (state is BlogItemLoading) {
                     return const CircularProgressIndicator();
-                  } else if (state is CreateBlogSuccess) {
-                    return Text("Blog Create ${state.id}");
-                  } else if (state is BlogError) {
+                  } else if (state is CreateBlogItemSuccess) {
+                    return Text("Blog Create ${state.blogId}");
+                  } else if (state is BlogItemError) {
                     return Text(state.message);
                   } else {
                     return const Text("Answer to appear here");
@@ -64,7 +64,7 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
               InkWell(
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
-                    context.read<BlogBloc>().add(
+                    context.read<BlogItemBloc>().add(
                           CreateBlogEvent(
                             id: _idController.text.toString(),
                             authorId: _authorIdController.text.toString(),
